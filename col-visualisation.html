@@ -18,27 +18,27 @@ p.outputchains  {
   font-family: Courier New,Courier;
   font-size:15pt;
   margin:0;
-	  }
+          }
 .red {color:red;}
 .highlight {color:red;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
-<script src="jquery.myhighlight-3.min.js"></script>
+<script src="jQueryHighlightRegex.js"></script>
 </head>
-
+ 
 <body>
-
+ 
 <header>
 <h1>Collagen sequence display and highlighting tool</h1>
-
+ 
 </header>
-
+ 
 <section>
 <h2>Input sequences here</h2>
-
+ 
 <p>Type your sequence into the box.</p>
-
+ 
 <article id="input">
   Leading chain:<br />
   <textarea class="inputchain" rows="4" cols="100">GPOGPOGPO</textarea>
@@ -51,48 +51,45 @@ p.outputchains  {
   <br />
 </article>
   Number of residues to stagger:
-  <input type="number" id="stagger" min="0" value="1" onchange="displayFunction()"/>
+  <input type="number" id="stagger" min="0" value="1" onchange="highlightFunction()"/>
   <br />
 <!--
-  Swap chain <input type="number" id="swap1" min="1" max="3" value="1" /> with
-  chain <input type="number" id="swap2" min="1" max="3" value="1" />
-  <button type="button" onclick = "swapChains()">swap chains</button>
+ Swap chain <input type="number" id="swap1" min="1" max="3" value="1" /> with
+ chain <input type="number" id="swap2" min="1" max="3" value="1" />
+ <button type="button" onclick = "swapChains()">swap chains</button>
 -->
-
+ 
 </section>
-
+ 
 <section>
 <h2>Get output here</h2>
-
+ 
 <article id="results"></article>
-
+ 
 </section>
-
+ 
 <!--
-  <br />
- <button type="button" 
-  onclick = "tidyDisplay()">
-  Tidy</button>
+ <br />
+<button type="button"
+ onclick = "tidyDisplay()">
+ Tidy</button>
 -->
-
+ 
 <section>
-
+ 
 <h2>Highlight residues</h2>
 <ul>
   <li>Use one letter code.</li>
   <li>All input will be automatically capitalised.</li>
-  <li>Some regex works. 
+  <li>Some regex works.
   <ul>
     <li><strong>GP</strong> finds exactly "GP" (G <emph>and</emph> P in that order).</li>
-    <li>For G or P, use <strong>[GP]</strong>.</li>
+    <li>For G or P, use <strong>G|P</strong>.</li>
     <li><strong>[A-Z]</strong> (square brackets included) matches any one residue.</li>
-    <li>For G followed by something, use <strong>G[A-Z]</strong>.</li>
   </ul>
-</ul> 
+</ul>
 Specify residues to be highlighted:
 <input type="text" id="selector" value="G" />
-<button type="button" onclick ="highlightFunction()">Highlight</button>
-<button type="button" onclick ="$('#results').removeHighlight()">Remove Highlight</button>
 <br />
 <!--
 Select highlight colour (doesn't do anything yet):
@@ -100,20 +97,33 @@ Select highlight colour (doesn't do anything yet):
 -->
 <br />
 <article id="testingresults"></article>
-
+ 
 </section>
-
-
+ 
+ 
 <script>
-$( document ).ready(function() {
-   displayFunction();
+$('.inputchain').keyup(function() {
+    highlightFunction()
 });
 
-$('.inputchain').keyup(displayFunction);
+$( document ).ready(function() {
+    highlightFunction();
+});
+
+function highlightFunction() {
+   var reg2 = $("#selector").val();
+   if (reg2 != '') {
+   reg2 = reg2.toUpperCase()
+   regex = new RegExp(reg2, 'ig') 
+   displayFunction()
+   $('#results').highlightRegex(regex);
+   }else{
+   displayFunction()
+   }
+}
 
 function displayFunction() {
-    $('#results').empty();
-    
+    $('#results').empty()
     $('.inputchain').each(function(index) {
         var outputChain = $('<p></p>').addClass('outputchains');
         var chains = $(this).val().toUpperCase();
@@ -123,38 +133,29 @@ function displayFunction() {
 }
 
 function staggerSpacer() {
-    var stagger = parseInt($("#stagger").val());
-    var staggerspace = new Array(stagger+1).join('-');
-    return staggerspace;
+    var stagger = parseInt($('#stagger').val())+1;
+    return Array(stagger).join('-');
 }
 
 function swapChains() {
-    var x = parseInt(document.getElementById("swap1").value)-1;
-    var y = parseInt(document.getElementById("swap2").value)-1;
-    
-    var chains = document.getElementsByClassName("inputchain");
-    chains[x].className = chains[x].className +" red";
+   var x = parseInt(document.getElementById("swap1").value)-1;
+   var y = parseInt(document.getElementById("swap2").value)-1;
+   
+   var chains = document.getElementsByClassName("inputchain");
+   chains[x].className = chains[x].className +" red";
 }
+ 
+$('#selector').keyup(function() {
+   highlightFunction()
+ });
+ 
 
-$('#selector').keyup(processAsYouType);
 
-function processAsYouType(){
-    if (this.value != '') {    
-    this.value = this.value.toUpperCase();
-    //~ highlightFunction();  //crashes too easily 
-  }
-};
-
-function highlightFunction() {
-    $('#results').removeHighlight();
-    var selector = "("+$("#selector").val()+")";
-    $("#results").highlight(selector);
-}
 
 
 
 </script>
-
-
+ 
+ 
 </body>
 </html>
