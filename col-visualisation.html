@@ -84,8 +84,9 @@ p.outputchains  {
   <li>Some regex works. 
   <ul>
     <li><strong>GP</strong> finds exactly "GP" (G <emph>and</emph> P in that order).</li>
-    <li>For G or P, use <strong>G|P</strong>.</li>
+    <li>For G or P, use <strong>[GP]</strong>.</li>
     <li><strong>[A-Z]</strong> (square brackets included) matches any one residue.</li>
+    <li>For G followed by something, use <strong>G[A-Z]</strong>.</li>
   </ul>
 </ul> 
 Specify residues to be highlighted:
