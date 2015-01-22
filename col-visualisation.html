@@ -22,10 +22,11 @@ p.outputchains  {
   margin:0;
 	  }
 .red {color:red;}
+.highlight {color:red;}
 </style>
 </head>
 
-<body onload="myFunction()">
+<body onload="displayFunction()">
 
 <header>
 <h1>Collagen sequence display and highlighting tool</h1>
@@ -39,17 +40,17 @@ p.outputchains  {
 
 <article id="input">
   First chain:<br />
-  <textarea id="firstchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <textarea class="inputchain" rows="4" cols="100" onkeyup="displayFunction()">GPOGPOGPO</textarea>
   <br />
   Second chain:<br />
-  <textarea id="secondchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <textarea class="inputchain" rows="4" cols="100" onkeyup="displayFunction()">GPOGPOGPO</textarea>
   <br />
   Third chain:<br />
-  <textarea id="thirdchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <textarea class="inputchain" rows="4" cols="100" onkeyup="displayFunction()">GPOGPOGPO</textarea>
   <br />
 </article>
   Number of residues to stagger:
-  <input type="number" id="stagger" min="0" value="1" onchange="myFunction()"/>
+  <input type="number" id="stagger" min="0" value="1" onchange="displayFunction()"/>
   <br />
 <!--
   Swap chain <input type="number" id="swap1" min="1" max="3" value="1" /> with
@@ -69,23 +70,32 @@ p.outputchains  {
 <!--
   <br />
  <button type="button" 
-  onclick = "makeStagger()">
+  onclick = "tidyDisplay()">
   Tidy</button>
 -->
 
 <section>
-  Select highlight colour (doesn't do anything yet):
-  <input type="color" id="highlightcol" value="#ff0000" />
-  <br />
-  <article id="testingresults"></article>
+
+<h2>Highlight residues</h2>
+<p>Use one letter code.</p>
+Specify residues to be highlighted:
+<input type="text" id="selector" value="G" />
+<button type="button" onclick ="highlightFunction()">Highlight</button>
+<br />
+Select highlight colour (doesn't do anything yet):
+<input type="color" id="highlightcol" value="#ff0000" />
+<br />
+
+<article id="testingresults"></article>
+
 </section>
 
 
 <script>
-function myFunction() {
-  var resultNodes = document.getElementById("results");
-  while (resultNodes.firstChild) {
-  resultNodes.removeChild(resultNodes.firstChild);
+function displayFunction() {
+    var resultNodes = document.getElementById("results");
+    while (resultNodes.firstChild) {
+    resultNodes.removeChild(resultNodes.firstChild);
   }
   
   var chains = document.getElementsByClassName("inputchain");
@@ -111,6 +121,13 @@ function swapChains() {
     
     var chains = document.getElementsByClassName("inputchain");
     chains[x].className = chains[x].className +" red";
+}
+
+function highlightFunction() {
+    var resultNodes = document.getElementById("results");
+    for(i = 0; i < chains.length; i++) {
+      var onechain = chains[i].value;
+    }
 }
 
 </script>
