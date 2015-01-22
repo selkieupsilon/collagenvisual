@@ -27,7 +27,7 @@ p.outputchains  {
 <script src="jquery.myhighlight-3.min.js"></script>
 </head>
 
-<body onload="displayFunction()">
+<body>
 
 <header>
 <h1>Collagen sequence display and highlighting tool</h1>
@@ -104,28 +104,26 @@ Select highlight colour (doesn't do anything yet):
 
 
 <script>
+$( document ).ready(function() {
+   displayFunction();
+});
+
 $('.inputchain').keyup(displayFunction);
 
 function displayFunction() {
-    var resultNodes = document.getElementById("results");
-    while (resultNodes.firstChild) {
-    resultNodes.removeChild(resultNodes.firstChild);
-  }
-  
-  var chains = document.getElementsByClassName("inputchain");
-  for(i = 0; i < chains.length; i++) {
-    var onechain = chains[i].value.toUpperCase();
-    var outputChain = document.createElement("P");
-    outputChain.innerHTML = new Array(i+1).join(staggerSpacer()) + onechain;
-    outputChain.className = "outputchains";
-    document.getElementById('results').appendChild(outputChain);
-  }
+    $('#results').empty();
+    
+    $('.inputchain').each(function(index) {
+        var outputChain = $('<p></p>').addClass('outputchains');
+        var chains = $(this).val().toUpperCase();
+        outputChain.append(new Array(index + 1).join(staggerSpacer()) + chains);
+        $('#results').append(outputChain);
+    });
 }
 
 function staggerSpacer() {
-    var stagger = parseInt(document.getElementById("stagger").value);
-    var staggerspace = "";
-    staggerspace = staggerspace + new Array(stagger+1).join('-');
+    var stagger = parseInt($("#stagger").val());
+    var staggerspace = new Array(stagger+1).join('-');
     return staggerspace;
 }
 
@@ -151,6 +149,8 @@ function highlightFunction() {
     var selector = "("+$("#selector").val()+")";
     $("#results").highlight(selector);
 }
+
+
 
 </script>
 
