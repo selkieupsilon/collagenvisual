@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Collagen sequence display and highlighting tool</title>
+<meta charset="utf-8">
+
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js">
+</script>
+<![endif]-->
+
+<style>
+body {font-family: Verdana, sans-serif; font-size:0.8em;}
+header, nav, section, footer
+{border:1px solid grey; margin:5px; padding:8px;}
+nav ul {margin:0; padding:0;}
+nav ul li {display:inline; margin:5px;}
+p.outputchains  {
+  /*color:green;*/
+  font-family: Courier New,Courier;
+  font-size:15pt;
+  margin:0;
+	  }
+.red {color:red;}
+</style>
+</head>
+
+<body onload="myFunction()">
+
+<header>
+<h1>Collagen sequence display and highlighting tool</h1>
+
+</header>
+
+<section>
+<h2>Input sequences here</h2>
+
+<p>Case insensitive. Just start typing into the box...</p>
+
+<article id="input">
+  First chain:<br />
+  <textarea id="firstchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <br />
+  Second chain:<br />
+  <textarea id="secondchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <br />
+  Third chain:<br />
+  <textarea id="thirdchain" class="inputchain" rows="4" cols="100" onkeyup="myFunction()">GPOGPOGPO</textarea>
+  <br />
+</article>
+  Number of residues to stagger:
+  <input type="number" id="stagger" min="0" value="1" onchange="myFunction()"/>
+  <br />
+<!--
+  Swap chain <input type="number" id="swap1" min="1" max="3" value="1" /> with
+  chain <input type="number" id="swap2" min="1" max="3" value="1" />
+  <button type="button" onclick = "swapChains()">swap chains</button>
+-->
+
+</section>
+
+<section>
+<h2>Get output here</h2>
+
+<article id="results"></article>
+
+</section>
+
+<!--
+  <br />
+ <button type="button" 
+  onclick = "makeStagger()">
+  Tidy</button>
+-->
+
+<section>
+  Select highlight colour (doesn't do anything yet):
+  <input type="color" id="highlightcol" value="#ff0000" />
+  <br />
+  <article id="testingresults"></article>
+</section>
+
+
+<script>
+function myFunction() {
+  var resultNodes = document.getElementById("results");
+  while (resultNodes.firstChild) {
+  resultNodes.removeChild(resultNodes.firstChild);
+  }
+  
+  var chains = document.getElementsByClassName("inputchain");
+  for(i = 0; i < chains.length; i++) {
+    var onechain = chains[i].value.toUpperCase();
+    var outputChain = document.createElement("P");
+    outputChain.innerHTML = new Array(i+1).join(staggerSpacer()) + onechain;
+    outputChain.className = "outputchains";
+    document.getElementById('results').appendChild(outputChain);
+  }
+}
+
+function staggerSpacer() {
+    var stagger = parseInt(document.getElementById("stagger").value);
+    var staggerspace = "";
+    staggerspace = staggerspace + new Array(stagger+1).join('-');
+    return staggerspace;
+}
+
+function swapChains() {
+    var x = parseInt(document.getElementById("swap1").value)-1;
+    var y = parseInt(document.getElementById("swap2").value)-1;
+    
+    var chains = document.getElementsByClassName("inputchain");
+    chains[x].className = chains[x].className +" red";
+}
+
+</script>
+
+
+</body>
+</html>
