@@ -27,7 +27,7 @@ p.outputchains  {
 <script src="jQueryHighlightRegex.js"></script>
 </head>
  
-<body onload="highlightFunction()">
+<body>
  
 <header>
 <h1>Collagen sequence display and highlighting tool</h1>
@@ -90,8 +90,6 @@ p.outputchains  {
 </ul>
 Specify residues to be highlighted:
 <input type="text" id="selector" value="G" />
-<button type="button" onclick ="highlightFunction()">Highlight</button>
-<button type="button" onclick ="$('#results').removeHighlight()">Remove Highlight</button>
 <br />
 <!--
 Select highlight colour (doesn't do anything yet):
@@ -105,30 +103,40 @@ Select highlight colour (doesn't do anything yet):
  
 <script>
 $('.inputchain').keyup(function() {
-highlightFunction()
+    highlightFunction()
 });
 
+$( document ).ready(function() {
+    highlightFunction();
+});
+
+function highlightFunction() {
+   var reg2 = $("#selector").val();
+   if (reg2 != '') {
+   reg2 = reg2.toUpperCase()
+   regex = new RegExp(reg2, 'ig') 
+   displayFunction()
+   $('#results').highlightRegex(regex);
+   }else{
+   displayFunction()
+   }
+}
+
 function displayFunction() {
-    var resultNodes = document.getElementById("results");
-    while (resultNodes.firstChild) {
-    resultNodes.removeChild(resultNodes.firstChild);
-  }
- 
-  var chains = document.getElementsByClassName("inputchain");
-  for(i = 0; i < chains.length; i++) {
-   var onechain = chains[i].value.toUpperCase();
-   var outputChain = document.createElement("P");
-   outputChain.innerHTML = new Array(i+1).join(staggerSpacer()) + onechain;
-   outputChain.className = "outputchains";
-   document.getElementById('results').appendChild(outputChain);
- }
+    $('#results').empty()
+    $('.inputchain').each(function(index) {
+        var outputChain = $('<p></p>').addClass('outputchains');
+        var chains = $(this).val().toUpperCase();
+        outputChain.append(new Array(index + 1).join(staggerSpacer()) + chains);
+        $('#results').append(outputChain);
+    });
 }
+
 function staggerSpacer() {
-   var stagger = parseInt(document.getElementById("stagger").value);
-   var staggerspace = "";
-   staggerspace = staggerspace + new Array(stagger+1).join('-');
-   return staggerspace;
+    var stagger = parseInt($('#stagger').val())+1;
+    return Array(stagger).join('-');
 }
+
 function swapChains() {
    var x = parseInt(document.getElementById("swap1").value)-1;
    var y = parseInt(document.getElementById("swap2").value)-1;
@@ -141,20 +149,11 @@ $('#selector').keyup(function() {
    highlightFunction()
  });
  
- 
- 
- 
-function highlightFunction() {
-   var reg2 = $("#selector").val();
-   if (reg2 != '') {
-   reg2 = reg2.toUpperCase()
-   regex = new RegExp(reg2, 'ig') 
-   displayFunction()
-   $('#results').highlightRegex(regex);
-   }else{
-   displayFunction()
-   }
-}
+
+
+
+
+
 </script>
  
  
