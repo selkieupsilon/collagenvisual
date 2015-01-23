@@ -56,8 +56,6 @@ p.outputchains  {
 
 <h2>Staggered output here</h2>
 
-<button type="button" onClick="displayFunction()">click me</button>
-
 <article id="results"></article>
 
 </section>
@@ -68,7 +66,7 @@ p.outputchains  {
 <ul>
   <li>Use one letter code.</li>
   <li>All input will be automatically capitalised.</li>
-  <li>Some regex works. 
+  <li>Some regex works.</li>
   <ul>
     <li><strong>GP</strong> finds exactly "GP" (G <emph>and</emph> P in that order).</li>
     <li>For G or P, use <strong>[GP]</strong>.</li>
@@ -97,16 +95,14 @@ Select highlight colour (doesn't do anything yet):
 </section>
 
 <script>
-//~ 
-//~ $( document ).ready(function() {
-   //~ displayFunction();
-//~ });
-//~ 
 
-//~ $('.inputchain').keyup(function() {
-   //~ 
-   //~ displayFunction();
-//~ });
+$( document ).ready(function() {
+   displayFunction();
+});
+
+$('.inputchain').keyup(function() {
+   displayFunction();
+});
 
 function staggerFunction() {
   var textArray = [];
@@ -125,7 +121,7 @@ function displayFunction() {
     var outputChain = $('<p></p>').addClass('outputchains');
     outputChain.append(chain);
     $('#results').append(outputChain);
-    console.log(outputChain);
+    //~ console.log(outputChain);
   })
 };
   
