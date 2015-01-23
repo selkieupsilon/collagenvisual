@@ -76,7 +76,7 @@ p.outputchains  {
   </ul>
 </ul> 
 Specify residues to be highlighted:
-<input type="text" id="selector" value="G" />
+<input type="text" id="selector" value="G" /><span id=counter></span>
  <br />
 <!--
 Select highlight colour (doesn't do anything yet):
@@ -87,32 +87,24 @@ Select highlight colour (doesn't do anything yet):
 </section>
 
 
+<!--
 <section>
 <h2>Tidy output here</h2>
 <button type="button" onClick="tidyDisplay()">Tidy</button>
 <article id="tidied"></article>
 
 </section>
+-->
 
 <script>
 
 $( document ).ready(function() {
-   displayFunction();
+   highlightFunction();
 });
 
 $('.inputchain').keyup(function() {
-   displayFunction();
+   highlightFunction();
 });
-
-function staggerFunction() {
-  var textArray = [];
-  $('.inputchain').each(function(index) {
-    var chain = $(this).val().toUpperCase();
-    textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
-  });
-  //~ console.log(textArray);
-  return textArray;
-}
 
 function displayFunction() {
   $('#results').empty();
@@ -121,26 +113,27 @@ function displayFunction() {
     var outputChain = $('<p></p>').addClass('outputchains');
     outputChain.append(chain);
     $('#results').append(outputChain);
-    //~ console.log(outputChain);
-  })
+  });
 };
-  
+
+function staggerFunction() {
+  var textArray = [];
+  $('.inputchain').each(function(index) {
+    var chain = $(this).val().toUpperCase();
+    textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
+  });
+  return textArray;
+};
 
 function staggerSpacer() {
   var stagger = parseInt($("#stagger").val());
   return Array(stagger+1).join('-');
-}
+};
 
-//~ function swapChains() {
-    //~ var x = parseInt(document.getElementById("swap1").value)-1;
-    //~ var y = parseInt(document.getElementById("swap2").value)-1;
-    //~ 
-    //~ var chains = document.getElementsByClassName("inputchain");
-    //~ chains[x].className = chains[x].className +" red";
-//~ }
 
 $('#selector').keyup(function() {
   this.value = this.value.toUpperCase();
+  $('#counter').html("");
   highlightFunction();
 });
 
@@ -150,21 +143,33 @@ function highlightFunction() {
       regex = new RegExp(reg2, 'ig') 
       displayFunction()
       $('#results').highlightRegex(regex);
+      countMatches();
     }else{
       displayFunction();
    }
+
 }
 
+function countMatches() {
+  var numItems = $('.highlight').length ; 
+
+  if (numItems != 0) {
+    $('#counter').html("<span> "+numItems+" matches</span>");
+  } else {
+    $('#counter').html("");
+  }
+  return numItems;
+};
+
 function tidyDisplay() {
-    $('.inputchain').each(function(index) {
-      var raw = $(this).val();
-      var tidied = (raw.match(/.{1,10}/g)).join("&nbsp;");
-      tidiedChain = $('<p></p>').addClass('outputchains');
-      tidiedchain.append
-      console.log(tidied);
-      //$('#tidied').append(tidied);
-    });
-}
+  $.each(sequenceArray, function(index, chain) {
+    var outputChain = $('<p></p>').addClass('outputchains');
+    outputChain.append(chain);
+    $('#tidied').append(outputChain);
+  })
+};
+
+
 
 </script>
 
