@@ -123,8 +123,9 @@ function displayFunction() {
   sequenceArray = staggerFunction();
   $.each(sequenceArray, function(index, chain) {
     var outputChain = $('<p></p>').addClass('outputchains');
+    outputChain.append(chain);
     $('#results').append(outputChain);
-    console.log(chain);
+    console.log(outputChain);
   })
 };
   
