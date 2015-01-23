@@ -20,7 +20,7 @@ p.outputchains  {
   margin:0;
 	  }
 .red {color:red;}
-.highlight {color:red;}
+.highlight {color:red;font-weight:bold;}
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
@@ -87,6 +87,7 @@ p.outputchains  {
     <li>For G or P, use <strong>[GP]</strong>.</li>
     <li><strong>[A-Z]</strong> (square brackets included) matches any one residue.</li>
     <li>For G followed by something, use <strong>G[A-Z]</strong>.</li>
+    <li>For (mouse) essential amino acids, use <strong>[VLIFMWTKRH]</strong>.</li>
   </ul>
 </ul> 
 Specify residues to be highlighted:
@@ -102,13 +103,21 @@ Select highlight colour (doesn't do anything yet):
 </section>
 
 
+<section>
+<h2>Tidy output here</h2>
+<button type="button" onClick="tidyDisplay()">Tidy</button>
+<article id="tidied"></article>
+
+</section>
+
 <script>
 $( document ).ready(function() {
    highlightFunction();
 });
 
 $('.inputchain').keyup(function() {
-highlightFunction();
+   this.value = this.value.toUpperCase();
+   highlightFunction();
 });
 
 function displayFunction() {
@@ -116,7 +125,7 @@ function displayFunction() {
     
     $('.inputchain').each(function(index) {
         var outputChain = $('<p></p>').addClass('outputchains');
-        var chains = $(this).val().toUpperCase();
+        var chains = $(this).val();
         outputChain.append(new Array(index + 1).join(staggerSpacer()) + chains);
         $('#results').append(outputChain);
     });
@@ -136,22 +145,26 @@ function swapChains() {
 }
 
 $('#selector').keyup(function() {
-highlightFunction();
+  this.value = this.value.toUpperCase();
+  highlightFunction();
 });
 
 function highlightFunction() {
-   var reg2 = $("#selector").val();
-   if (reg2 != '') {
-   reg2 = reg2.toUpperCase()
-   regex = new RegExp(reg2, 'ig') 
-   displayFunction()
-   $('#results').highlightRegex(regex);
-   }else{
-   displayFunction()
+    var reg2 = $("#selector").val();
+    if (reg2 != '') {
+      regex = new RegExp(reg2, 'ig') 
+      displayFunction()
+      $('#results').highlightRegex(regex);
+    }else{
+      displayFunction();
    }
 }
 
-
+function tidyDisplay() {
+    $('.outputchains').each(function(index) {
+      
+    });
+}
 
 </script>
 
