@@ -53,27 +53,14 @@ p.outputchains  {
   Number of residues to stagger:
   <input type="number" id="stagger" min="0" value="1" onchange="highlightFunction()"/>
   <br />
-<!--
-  Swap chain <input type="number" id="swap1" min="1" max="3" value="1" /> with
-  chain <input type="number" id="swap2" min="1" max="3" value="1" />
-  <button type="button" onclick = "swapChains()">swap chains</button>
--->
 
-</section>
+<h2>Staggered output here</h2>
 
-<section>
-<h2>Get output here</h2>
+<button type="button" onClick="displayFunction()">click me</button>
 
 <article id="results"></article>
 
 </section>
-
-<!--
-  <br />
- <button type="button" 
-  onclick = "tidyDisplay()">
-  Tidy</button>
--->
 
 <section>
 
@@ -92,13 +79,12 @@ p.outputchains  {
 </ul> 
 Specify residues to be highlighted:
 <input type="text" id="selector" value="G" />
-<br />
+ <br />
 <!--
 Select highlight colour (doesn't do anything yet):
 <input type="color" id="highlightcol" value="#ff0000" />
 -->
-<br />
-<article id="testingresults"></article>
+
 
 </section>
 
@@ -111,38 +97,50 @@ Select highlight colour (doesn't do anything yet):
 </section>
 
 <script>
-$( document ).ready(function() {
-   highlightFunction();
-});
+//~ 
+//~ $( document ).ready(function() {
+   //~ displayFunction();
+//~ });
+//~ 
 
-$('.inputchain').keyup(function() {
-   this.value = this.value.toUpperCase();
-   highlightFunction();
-});
+//~ $('.inputchain').keyup(function() {
+   //~ 
+   //~ displayFunction();
+//~ });
+
+function staggerFunction() {
+  var textArray = [];
+  $('.inputchain').each(function(index) {
+    var chain = $(this).val().toUpperCase();
+    textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
+  });
+  //~ console.log(textArray);
+  return textArray;
+}
 
 function displayFunction() {
-    $('#results').empty();
-    
-    $('.inputchain').each(function(index) {
-        var outputChain = $('<p></p>').addClass('outputchains');
-        var chains = $(this).val();
-        outputChain.append(new Array(index + 1).join(staggerSpacer()) + chains);
-        $('#results').append(outputChain);
-    });
-}
+  $('#results').empty();
+  sequenceArray = staggerFunction();
+  $.each(sequenceArray, function(index, chain) {
+    var outputChain = $('<p></p>').addClass('outputchains');
+    $('#results').append(outputChain);
+    console.log(chain);
+  })
+};
+  
 
 function staggerSpacer() {
-    var stagger = parseInt($("#stagger").val());
-    return Array(stagger+1).join('-');;
+  var stagger = parseInt($("#stagger").val());
+  return Array(stagger+1).join('-');
 }
 
-function swapChains() {
-    var x = parseInt(document.getElementById("swap1").value)-1;
-    var y = parseInt(document.getElementById("swap2").value)-1;
-    
-    var chains = document.getElementsByClassName("inputchain");
-    chains[x].className = chains[x].className +" red";
-}
+//~ function swapChains() {
+    //~ var x = parseInt(document.getElementById("swap1").value)-1;
+    //~ var y = parseInt(document.getElementById("swap2").value)-1;
+    //~ 
+    //~ var chains = document.getElementsByClassName("inputchain");
+    //~ chains[x].className = chains[x].className +" red";
+//~ }
 
 $('#selector').keyup(function() {
   this.value = this.value.toUpperCase();
@@ -161,8 +159,13 @@ function highlightFunction() {
 }
 
 function tidyDisplay() {
-    $('.outputchains').each(function(index) {
-      
+    $('.inputchain').each(function(index) {
+      var raw = $(this).val();
+      var tidied = (raw.match(/.{1,10}/g)).join("&nbsp;");
+      tidiedChain = $('<p></p>').addClass('outputchains');
+      tidiedchain.append
+      console.log(tidied);
+      //$('#tidied').append(tidied);
     });
 }
 
