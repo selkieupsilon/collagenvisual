@@ -186,7 +186,7 @@ $.urlParam = function(name){
 function defaultSearchKey() {
     searchKey = $.urlParam('search');
     if (searchKey != null) {
-        $('#selector').val(searchKey);
+        $('#selector').val(searchKey.toUpperCase());
     } else {
         $('#selector').val("G");
     }
