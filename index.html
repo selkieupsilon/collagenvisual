@@ -112,7 +112,8 @@ Select highlight colour (doesn't do anything yet):
 <script>
 
 $( document ).ready(function() {
-   highlightFunction();
+    defaultSearchKey();
+    highlightFunction();
 });
 
 $('.inputchain').keyup(function() {
@@ -143,7 +144,6 @@ function staggerSpacer() {
   return Array(stagger+1).join('-');
 };
 
-
 $('#selector').keyup(function() {
   this.value = this.value.toUpperCase();
   $('#counter').html("");
@@ -172,6 +172,25 @@ function countMatches() {
   }
   return numItems;
 };
+
+$.urlParam = function(name){
+    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    if (results==null){
+       return null;
+    }
+    else{
+       return results[1] || 0;
+    }
+}
+
+function defaultSearchKey() {
+    searchKey = $.urlParam('search');
+    if (searchKey != null) {
+        $('#selector').val(searchKey);
+    } else {
+        $('#selector').val("G");
+    }
+}
 
 //~ function getHighlightedArray() {
     //~ var innerHTMLArray = [];
