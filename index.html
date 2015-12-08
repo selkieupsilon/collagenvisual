@@ -13,7 +13,7 @@ body {font-family: Verdana, sans-serif; font-size:0.8em;}
 header, nav, section, footer {border:1px solid grey; margin:5px; padding:8px;}
 nav ul {margin:0; padding:0;}
 nav ul li {display:inline; margin:5px;}
-p.outputchains  {
+p.outputchain, p.tidied {
   /*color:green;*/
   font-family: Courier New,Courier;
   font-size:15pt;
@@ -87,6 +87,7 @@ Select highlight colour (doesn't do anything yet):
 </section>
 
 
+
 <!--
 <section>
 <h2>Tidy output here</h2>
@@ -95,6 +96,7 @@ Select highlight colour (doesn't do anything yet):
 
 </section>
 -->
+
 
 <script>
 
@@ -108,15 +110,15 @@ $('.inputchain').keyup(function() {
 
 function displayFunction() {
   $('#results').empty();
-  sequenceArray = staggerFunction();
+  sequenceArray = getStaggeredSequences();
   $.each(sequenceArray, function(index, chain) {
-    var outputChain = $('<p></p>').addClass('outputchains');
-    outputChain.append(chain);
-    $('#results').append(outputChain);
+    var output = $('<p></p>').addClass('outputchain');
+    output.append(chain);
+    $('#results').append(output);
   });
 };
 
-function staggerFunction() {
+function getStaggeredSequences() {
   var textArray = [];
   $('.inputchain').each(function(index) {
     var chain = $(this).val().toUpperCase();
@@ -147,7 +149,6 @@ function highlightFunction() {
     }else{
       displayFunction();
    }
-
 }
 
 function countMatches() {
@@ -161,13 +162,24 @@ function countMatches() {
   return numItems;
 };
 
-function tidyDisplay() {
-  $.each(sequenceArray, function(index, chain) {
-    var outputChain = $('<p></p>').addClass('outputchains');
-    outputChain.append(chain);
-    $('#tidied').append(outputChain);
-  })
-};
+//~ function getHighlightedArray() {
+    //~ var innerHTMLArray = [];
+    //~ $('.outputchain').each(function(index) {
+        //~ var chain = $(this).val();
+        //~ innerHTMLArray.push(chain);
+    //~ });
+    //~ return innerHTMLArray;
+//~ };
+//~ 
+//~ function tidyDisplay() {
+    //~ $('#tidied').empty();
+    //~ highlightedArray = getHighlightedArray();
+  //~ $.each(highlightedArray, function(index, chain) {
+    //~ var outputChain = $('<p></p>').addClass('tidied');
+    //~ outputChain.append(chain);
+    //~ $('#tidied').append(outputChain);
+  //~ });
+//~ };
 
 
 
