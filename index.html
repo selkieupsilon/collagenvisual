@@ -20,14 +20,39 @@ nav ul li {display:inline; margin:5px;}
 }
 .child {
     width: 50%;
+}
+.wrapper{
+    width: 100%;
+    padding:0;
+    margin:0;
+    height:1px;
+    position:relative;
+}
+div.outputchain, p.tidied {
+    line-height: 3.25em;
+    width: 80%;
+    padding: 0;
+    margin:0;
+    font-family: "Courier New",Courier,monospace;
+    font-size:15pt;
+    position: absolute;
+    top: 0em;
+  word-break: break-all;  
+}
+div:nth-of-type(2){
+    top: 0.9em;
+<!--
+    background: #ffff00;
+-->
 
 }
-p.outputchain, p.tidied {
-  /*color:green;*/
-  font-family: Courier New,Courier;
-  font-size:15pt;
-  margin:0;
-	  }
+div:nth-of-type(3){
+    top: 1.7em;
+<!--
+    background: #ffff00;
+-->
+}
+      
 .red {color:red;}
 .highlight {color:red;font-weight:bold;}
 </style>
@@ -93,10 +118,10 @@ Select highlight colour (doesn't do anything yet):
 </div>
 
 <section>
-<h2>Staggered output here</h2>
-
-<article id="results"></article>
-
+    <h2>Staggered output here</h2>
+    <div class="wrapper">
+        <div id="results"></div>
+    </div>
 </section>
 
 <!--
@@ -124,7 +149,7 @@ function displayFunction() {
   $('#results').empty();
   sequenceArray = getStaggeredSequences();
   $.each(sequenceArray, function(index, chain) {
-    var output = $('<p></p>').addClass('outputchain');
+    var output = $('<div></div>').addClass('outputchain');
     output.append(chain);
     $('#results').append(output);
   });
