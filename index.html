@@ -115,7 +115,7 @@ The default stagger scheme refers to <a href="http://www.pnas.org/content/109/14
   </ul>
 </ul> 
 Specify residues to be highlighted:
-<input type="text" id="selector" value="G" /><span id=counter></span>
+<input type="text" id="selector" value="G" /><span id="counter" class="red"></span>
  <br />
 <!--
 Select highlight colour:
@@ -174,7 +174,14 @@ function displayFunction() {
     output.append(chain);
     $("#results").append(output);
   });
-  setOutputColWidth();
+  
+  $(".outputchain").each(function() {
+      var chunk = $(this).html();
+      newchunk = chunk.replace(/(([A-Z\-][^A-Z\-]*){10})/g,"$1 ")
+      $(this).html(newchunk);
+      });
+      
+      setOutputColWidth();
 };
 
 function getStaggeredSequences() {
