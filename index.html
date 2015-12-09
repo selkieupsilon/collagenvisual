@@ -45,7 +45,6 @@ nav ul li {display:inline; margin:5px;}
 }
 div.outputchain {
     line-height: 3.25em;
-    width: 55ch;
     padding: 0;
     margin:0;
     font-family: "Courier New",Courier,monospace;
@@ -127,7 +126,7 @@ Select highlight colour:
 <!--
 <p>Proline hydroxylation (changes P in GXP to GXO) YES/NO</p>
 -->
-<p>Amino acids per line <input type="number" id="outputcol" value="80" /></p>
+<p>Amino acids per line <input type="number" min="35" id="outputcol" /></p>
 
 </section>
 </div>
@@ -145,47 +144,49 @@ Select highlight colour:
 
 $( document ).ready(function() {
     defaultSearchKey();
+    defaultOutputColWidth();
     highlightFunction();
 });
 
-$('.inputchain').keyup(function() {
+$(".inputchain").keyup(function() {
    highlightFunction();
 });
 
-$('#selector').keyup(function() {
+$("#selector").keyup(function() {
   this.value = this.value.toUpperCase();
-  $('#counter').html("");
+  $("#counter").html("");
   highlightFunction();
 });
 
-$('#outputcol').keyup(function() {
+$("#outputcol").keyup(function() {
    highlightFunction();
 });
 
 function displayFunction() {
-  $('#results').empty();
+  $("#results").empty();
   sequenceArray = getStaggeredSequences();
   $.each(sequenceArray, function(index, chain) {
-    var output = $('<div></div>').addClass('outputchain');
+    var output = $("<div></div>").addClass("outputchain");
     output.append(chain);
-    $('#results').append(output);
+    $("#results").append(output);
   });
+  setOutputColWidth();
   heightAdjust();
 };
 
 function heightAdjust() {
     var maxHeight = -1;
-    $('div.outputchain').each(function() {
+    $("div.outputchain").each(function() {
         if ($(this).height() > maxHeight) {
             maxHeight = $(this).height();
         }
     });
-    $('#results').css('height', maxHeight +25);
+    $("#results").css("height", maxHeight +25);
 };
 
 function getStaggeredSequences() {
   var textArray = [];
-  $('.inputchain').each(function(index) {
+  $(".inputchain").each(function(index) {
     var chain = $(this).val().toUpperCase();
     textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
   });
@@ -194,17 +195,15 @@ function getStaggeredSequences() {
 
 function staggerSpacer() {
   var stagger = parseInt($("#stagger").val());
-  return Array(stagger+1).join('-');
+  return Array(stagger+1).join("-");
 };
-
-
 
 function highlightFunction() {
     var reg2 = $("#selector").val();
-    if (reg2 != '') {
-      regex = new RegExp(reg2, 'ig') 
+    if (reg2 != "") {
+      regex = new RegExp(reg2, "ig") 
       displayFunction()
-      $('#results').highlightRegex(regex);
+      $("#results").highlightRegex(regex);
       countMatches();
     }else{
       displayFunction();
@@ -212,18 +211,18 @@ function highlightFunction() {
 }
 
 function countMatches() {
-  var numItems = $('.highlight').length ; 
+  var numItems = $(".highlight").length ; 
 
   if (numItems != 0) {
-    $('#counter').html("<span> "+numItems+" matches</span>");
+    $("#counter").html("<span> "+numItems+" matches</span>");
   } else {
-    $('#counter').html("");
+    $("#counter").html("");
   }
   return numItems;
 };
 
 $.urlParam = function(name){
-    var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+    var results = new RegExp("[\?&]" + name + "=([^&#]*)").exec(window.location.href);
     if (results==null){
        return null;
     }
@@ -233,34 +232,35 @@ $.urlParam = function(name){
 }
 
 function defaultSearchKey() {
-    searchKey = $.urlParam('search');
+    var searchKey = $.urlParam("search");
     if (searchKey != null) {
-        $('#selector').val(searchKey.toUpperCase());
+        $("#selector").val(searchKey.toUpperCase());
     } else {
-        $('#selector').val("G");
+        $("#selector").val("G");
     }
 }
 
-//~ function getHighlightedArray() {
-    //~ var innerHTMLArray = [];
-    //~ $('.outputchain').each(function(index) {
-        //~ var chain = $(this).val();
-        //~ innerHTMLArray.push(chain);
-    //~ });
-    //~ return innerHTMLArray;
-//~ };
-//~ 
-//~ function tidyDisplay() {
-    //~ $('#tidied').empty();
-    //~ highlightedArray = getHighlightedArray();
-  //~ $.each(highlightedArray, function(index, chain) {
-    //~ var outputChain = $('<p></p>').addClass('tidied');
-    //~ outputChain.append(chain);
-    //~ $('#tidied').append(outputChain);
-  //~ });
-//~ };
+function isInt(n) {
+    return +n === n && !(n % 1);
+}
 
+function defaultOutputColWidth() {
+    var colWidth = parseInt( $.urlParam("col") );
+    if (isInt(colWidth)) {
+        $("#outputcol").val(colWidth);
+    } else {
+        $("#outputcol").val("55");
+    }
+}
 
+function setOutputColWidth() {
+    var colWidth = $("#outputcol").val();
+    $(".outputchain").css("width",colWidth.concat("ch"));
+}
+
+$("#outputcol").bind("change keyup", function(e) {
+    setOutputColWidth();
+});
 
 </script>
 
