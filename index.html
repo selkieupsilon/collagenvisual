@@ -245,17 +245,19 @@ function isInt(n) {
 }
 
 function defaultOutputColWidth() {
-    var colWidth = parseInt( $.urlParam("col") );
-    if (isInt(colWidth)) {
-        $("#outputcol").val(colWidth);
+    var colWidthNoSpaces = parseInt( $.urlParam("col") );
+    if (isInt(colWidthNoSpaces)) {
+        $("#outputcol").val(colWidthNoSpaces);
     } else {
-        $("#outputcol").val("55");
+        $("#outputcol").val("50");
     }
 }
 
 function setOutputColWidth() {
-    var colWidth = $("#outputcol").val();
-    $(".outputchain").css("width",colWidth.concat("ch"));
+    var colWidthNoSpaces = parseInt( $("#outputcol").val() );
+    var colWidth = (colWidthNoSpaces/10 | 0)+colWidthNoSpaces ;
+    c = colWidth.toString(); 
+    $(".outputchain").css("width",c.concat("ch"));
     heightAdjust();
 }
 
