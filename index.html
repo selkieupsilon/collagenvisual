@@ -71,7 +71,7 @@ div:nth-of-type(3){
 
 <header>
 <h1>Collagen sequence display and highlighting tool</h1>
-
+Copyright (c) 2015 Wing Ying Chow. MIT License. <a href="https://github.com/selkieupsilon/collagenvisual">Hosted on GitHub</a>.
 </header>
 
 <div class="parent">
@@ -94,7 +94,7 @@ The default stagger scheme refers to <a href="http://www.pnas.org/content/109/14
   <br />
 </article>
   Number of residues to stagger:
-  <input type="number" id="stagger" min="0" value="1" onchange="highlightFunction()"/>
+  <input type="number" id="stagger" min="0" value="1"/>
   <br />
 
 </section>
@@ -158,8 +158,12 @@ $("#selector").keyup(function() {
   highlightFunction();
 });
 
-$("#outputcol").keyup(function() {
-   highlightFunction();
+$("#stagger").on("change keyup", function(e) {
+    highlightFunction();
+});
+
+$("#outputcol").on("change keyup", function(e) {
+    setOutputColWidth();
 });
 
 function displayFunction() {
@@ -171,17 +175,6 @@ function displayFunction() {
     $("#results").append(output);
   });
   setOutputColWidth();
-  heightAdjust();
-};
-
-function heightAdjust() {
-    var maxHeight = -1;
-    $("div.outputchain").each(function() {
-        if ($(this).height() > maxHeight) {
-            maxHeight = $(this).height();
-        }
-    });
-    $("#results").css("height", maxHeight +25);
 };
 
 function getStaggeredSequences() {
@@ -256,11 +249,18 @@ function defaultOutputColWidth() {
 function setOutputColWidth() {
     var colWidth = $("#outputcol").val();
     $(".outputchain").css("width",colWidth.concat("ch"));
+    heightAdjust();
 }
 
-$("#outputcol").bind("change keyup", function(e) {
-    setOutputColWidth();
-});
+function heightAdjust() {
+    var maxHeight = -1;
+    $("div.outputchain").each(function() {
+        if ($(this).height() > maxHeight) {
+            maxHeight = $(this).height();
+        }
+    });
+    $("#results").css("height", maxHeight +25);
+};
 
 </script>
 
