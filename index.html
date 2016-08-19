@@ -144,12 +144,12 @@ Select highlight colour:
 
 $( document ).ready(function() {
     defaultSearchKey();
-    updatefromSearch();
     defaultOutputColWidth();
+    updatefromSearch();
 });
 
 $(".inputchain").keyup(function() {
-   updatefromSearch();
+	updatefromSearch();
 });
 
 $("#selector").keyup(function() {
@@ -169,41 +169,40 @@ $("#outputcol").on("change keyup", function(e) {
 function updatefromSearch() {
 	highlightSearch();
     tidyDisplay();
+    setOutputColWidth();
+    heightAdjust();
 };
 
 function showChains() {
-  $("#results").empty();
-  sequenceArray = getStaggeredSequences();
-  $.each(sequenceArray, function(index, chain) {
-    var output = $("<div></div>").addClass("outputchain");
-    output.append(chain);
-    $("#results").append(output);
-  });
-  
+	$("#results").empty();
+    sequenceArray = getStaggeredSequences();
+    $.each(sequenceArray, function(index, chain) {
+		var output = $("<div></div>").addClass("outputchain");
+        output.append(chain);
+        $("#results").append(output);
+    });
 };
 
 function tidyDisplay () {
-	  $(".outputchain").each(function() {
-      var chunk = $(this).html();
-      newchunk = chunk.replace(/(([A-Z\-][^A-Z\-]*){10})/g,"$1 ")
-      $(this).html(newchunk);
-      });
-      
-      setOutputColWidth();
+	$(".outputchain").each(function() {
+    var chunk = $(this).html();
+    newchunk = chunk.replace(/(([A-Z\-][^A-Z\-]*){10})/g,"$1 ")
+    $(this).html(newchunk);
+    });
 };
 
 function getStaggeredSequences() {
-  var textArray = [];
-  $(".inputchain").each(function(index) {
-    var chain = $(this).val().toUpperCase();
-    textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
-  });
+	var textArray = [];
+    $(".inputchain").each(function(index) {
+		var chain = $(this).val().toUpperCase();
+        textArray.push(new Array(index + 1).join(staggerSpacer()) + chain);
+	});
   return textArray;
 };
 
 function staggerSpacer() {
-  var stagger = parseInt($("#stagger").val());
-  return Array(stagger+1).join("-");
+	var stagger = parseInt($("#stagger").val());
+    return Array(stagger+1).join("-");
 };
 
 function highlightSearch() {
@@ -217,14 +216,14 @@ function highlightSearch() {
 }
 
 function countMatches() {
-  var numItems = $(".highlight").length ; 
-
-  if (numItems != 0) {
-    $("#counter").html("<span> "+numItems+" matches</span>");
-  } else {
-    $("#counter").html("");
-  }
-  return numItems;
+	var numItems = $(".highlight").length ; 
+    if (numItems != 0) {
+		$("#counter").html("<span> "+numItems+" matches</span>");
+	}
+	else {
+		$("#counter").html("");
+    }
+    return numItems;
 };
 
 $.urlParam = function(name){
@@ -264,7 +263,6 @@ function setOutputColWidth() {
     var colWidth = (colWidthNoSpaces/10 | 0)+colWidthNoSpaces ;
     c = colWidth.toString(); 
     $(".outputchain").css("width",c.concat("ch"));
-    heightAdjust();
 }
 
 function heightAdjust() {
