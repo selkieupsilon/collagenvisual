@@ -144,29 +144,34 @@ Select highlight colour:
 
 $( document ).ready(function() {
     defaultSearchKey();
+    updatefromSearch();
     defaultOutputColWidth();
-    highlightFunction();
 });
 
 $(".inputchain").keyup(function() {
-   highlightFunction();
+   updatefromSearch();
 });
 
 $("#selector").keyup(function() {
-  this.value = this.value.toUpperCase();
-  $("#counter").html("");
-  highlightFunction();
+	this.value = this.value.toUpperCase();
+	$("#counter").html("");
+	updatefromSearch();
 });
 
 $("#stagger").on("change keyup", function(e) {
-    highlightFunction();
+    updatefromSearch();
 });
 
 $("#outputcol").on("change keyup", function(e) {
     setOutputColWidth();
 });
 
-function displayFunction() {
+function updatefromSearch() {
+	highlightSearch();
+    tidyDisplay();
+};
+
+function showChains() {
   $("#results").empty();
   sequenceArray = getStaggeredSequences();
   $.each(sequenceArray, function(index, chain) {
@@ -175,7 +180,10 @@ function displayFunction() {
     $("#results").append(output);
   });
   
-  $(".outputchain").each(function() {
+};
+
+function tidyDisplay () {
+	  $(".outputchain").each(function() {
       var chunk = $(this).html();
       newchunk = chunk.replace(/(([A-Z\-][^A-Z\-]*){10})/g,"$1 ")
       $(this).html(newchunk);
@@ -198,16 +206,14 @@ function staggerSpacer() {
   return Array(stagger+1).join("-");
 };
 
-function highlightFunction() {
+function highlightSearch() {
     var reg2 = $("#selector").val();
     if (reg2 != "") {
       regex = new RegExp(reg2, "ig") 
-      displayFunction()
+      showChains()
       $("#results").highlightRegex(regex);
       countMatches();
-    }else{
-      displayFunction();
-   }
+    }
 }
 
 function countMatches() {
